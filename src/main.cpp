@@ -1,15 +1,22 @@
 #include <Arduino.h>
+#include <FastLED.h>
+
+// LED Settings
+#define NUM_LEDS          64
+#define DATA_PIN          32 
+
+// Define the led chain
+CRGB leds[NUM_LEDS];
+uint8_t counter = 0;
 
 void setup() {
-  delay(1000);
-  log_v("Hello world: %dms", millis());
-  log_d("Free PSRAM: %d", ESP.getFreePsram());
-  log_i("Free heap: %d", ESP.getFreeHeap());
-  log_w("Total PSRAM: %d", ESP.getPsramSize());
-  log_e("Total heap: %d", ESP.getHeapSize());
-
+  FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);
 }
 
 void loop() {
-
+    FastLED.clear();
+    leds[counter % 64] = CHSV(counter, 255, 100);
+    FastLED.show();
+    counter++;
+    delay(100);
 }
